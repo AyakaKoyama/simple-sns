@@ -22,9 +22,13 @@ export default function Page() {
     setUsername(e.target.value);
   };
 
-  const postPostFunc = async (post: any) => {
+  const postPostFunc = async (post: {
+    title: string;
+    content: string;
+    username: string;
+  }) => {
     await postPost(post);
-    router.push("/posts");
+    //router.push("/posts");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
