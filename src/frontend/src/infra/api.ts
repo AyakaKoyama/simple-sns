@@ -7,14 +7,14 @@ axios.defaults.headers.common["Content-Type"] = "application/json";
 
 export const postPost = async (params: any) =>
   axios
-    .post("/posts/create", snakecaseKeys(params), {
+    .post("/posts", snakecaseKeys(params), {
       headers: {
         "Content-Type": "application/json",
       },
     })
     .then((response) => {
       console.log(response.data);
-      camelcaseKeys(response.data, { deep: true });
+      return camelcaseKeys(response.data, { deep: true });
     })
     .catch(function (error) {
       if (error.response) {
@@ -80,9 +80,8 @@ export const getPosts = async () =>
   })
     .then((response) => {
       console.log(response);
-      camelcaseKeys(response.data, { deep: true });
+      return camelcaseKeys(response.data, { deep: true });
     })
-
     .catch(function (error) {
       if (error.response) {
         // リクエストが行われ、サーバーは 2xx の範囲から外れるステータスコードで応答しました

@@ -28,7 +28,7 @@ export default function Page() {
     username: string;
   }) => {
     await postPost(post);
-    //router.push("/posts");
+    router.push("/posts");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
