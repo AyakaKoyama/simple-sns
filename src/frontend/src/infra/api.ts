@@ -41,6 +41,7 @@ export const getPost = async (params: any) =>
     url: `/posts/${params}`,
   })
     .then((response) => camelcaseKeys(response.data, { deep: true }))
+
     .catch(function (error) {
       if (error.response) {
         // リクエストが行われ、サーバーは 2xx の範囲から外れるステータスコードで応答しました
