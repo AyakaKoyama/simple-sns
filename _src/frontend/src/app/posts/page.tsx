@@ -1,7 +1,7 @@
 "use client";
-import { getPost, getPosts } from "@/infra/api";
+import { getPosts } from "@/infra/api";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type Post = {
   id: number;

@@ -4,7 +4,7 @@ import { getPosts, postPost } from "@/infra/api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/compat/router";
+import { useRouter } from "next/navigation";
 
 interface IFormInput {
   title: string;
@@ -55,8 +55,11 @@ export default function Page() {
       </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label className="block mb-2 text-indigo-500">タイトル</label>
+          <label htmlFor="title" className="block mb-2 text-indigo-500">
+            タイトル
+          </label>
           <input
+            id="title"
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="text"
             {...register("title")}
@@ -64,11 +67,13 @@ export default function Page() {
           {errors.title && (
             <p className="text-red-500">{errors.title.message}</p>
           )}{" "}
-          {/* エラーメッセージ */}
         </div>
         <div>
-          <label className="block mb-2 text-indigo-500">内容</label>
+          <label htmlFor="content" className="block mb-2 text-indigo-500">
+            内容
+          </label>
           <input
+            id="content"
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="text"
             {...register("content")}
@@ -76,11 +81,13 @@ export default function Page() {
           {errors.content && (
             <p className="text-red-500">{errors.content.message}</p>
           )}{" "}
-          {/* エラーメッセージ */}
         </div>
         <div>
-          <label className="block mb-2 text-indigo-500">ユーザー名</label>
+          <label htmlFor="username" className="block mb-2 text-indigo-500">
+            ユーザー名
+          </label>
           <input
+            id="username"
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="text"
             {...register("username")}
@@ -88,7 +95,6 @@ export default function Page() {
           {errors.username && (
             <p className="text-red-500">{errors.username.message}</p>
           )}{" "}
-          {/* エラーメッセージ */}
         </div>
 
         <button
