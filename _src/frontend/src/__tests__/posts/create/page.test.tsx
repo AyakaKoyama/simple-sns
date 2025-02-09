@@ -32,29 +32,36 @@ describe("投稿作成ページ", () => {
     jest.clearAllMocks();
   });
 
+  it("タイトルが表示されること", async () => {
+    render(<Page />);
+    await waitFor(() => {
+      expect(screen.queryByText("投稿作成")).toBeInTheDocument();
+    });
+  });
+
   it("フォームが正しく表示されること", () => {
     render(<Page />);
 
-    expect(screen.getByText("投稿作成")).toBeInTheDocument();
+    expect(screen.queryByText("投稿作成")).toBeInTheDocument();
     expect(screen.getByLabelText("タイトル")).toBeInTheDocument();
     expect(screen.getByLabelText("内容")).toBeInTheDocument();
     expect(screen.getByLabelText("ユーザー名")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "投稿" })).toBeInTheDocument();
   });
 
-  it.skip("必須フィールドが空の場合にエラーメッセージが表示されること", async () => {
+  it("必須フィールドが空の場合にエラーメッセージが表示されること", async () => {
     render(<Page />);
 
     fireEvent.click(screen.getByRole("button", { name: "投稿" }));
 
     await waitFor(() => {
-      expect(screen.getByText("タイトルは必須です")).toBeInTheDocument();
-      expect(screen.getByText("内容は必須です")).toBeInTheDocument();
-      expect(screen.getByText("ユーザー名は必須です")).toBeInTheDocument();
+      expect(screen.queryByText("タイトルは必須です")).toBeInTheDocument();
+      expect(screen.queryByText("内容は必須です")).toBeInTheDocument();
+      expect(screen.queryByText("ユーザー名は必須です")).toBeInTheDocument();
     });
   });
 
-  it.skip("ユーザー名が重複している場合にエラーメッセージが表示されること", async () => {
+  it("ユーザー名が重複している場合にエラーメッセージが表示されること", async () => {
     (getPosts as jest.Mock).mockResolvedValue([{ username: "existingUser" }]);
 
     render(<Page />);
@@ -62,15 +69,16 @@ describe("投稿作成ページ", () => {
     const usernameInput = screen.getByLabelText("ユーザー名");
     fireEvent.change(usernameInput, { target: { value: "existingUser" } });
     fireEvent.blur(usernameInput);
+    fireEvent.click(screen.getByRole("button", { name: "投稿" }));
 
     await waitFor(() => {
       expect(
-        screen.getByText("ユーザー名が重複しています")
+        screen.queryByText("ユーザー名が重複しています")
       ).toBeInTheDocument();
     });
   });
 
-  it.skip("フォームが正しく送信されること", async () => {
+  it("フォームが正しく送信されること", async () => {
     render(<Page />);
 
     fireEvent.change(screen.getByLabelText("タイトル"), {

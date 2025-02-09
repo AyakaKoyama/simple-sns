@@ -70,7 +70,7 @@ describe("投稿一覧ページ", () => {
     });
   });
 
-  it.skip("APIエラー時にエラーメッセージが表示されること", async () => {
+  it("APIエラー時にエラーメッセージが表示されること", async () => {
     const errorMessage = "APIエラーが発生しました";
     (getPosts as jest.Mock).mockRejectedValue(new Error(errorMessage));
     render(<Page />);

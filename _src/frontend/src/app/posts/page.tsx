@@ -23,7 +23,6 @@ export default function Page() {
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
-
       setLoading(false);
     }
   };
