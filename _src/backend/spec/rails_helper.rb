@@ -8,8 +8,6 @@ require 'rspec/rails'
 # rspec-rails を使用するための設定
 require 'spec_helper'
 require_relative '../config/environment'
-
-
 # RSpec の実行環境が production になっていないかチェック
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 

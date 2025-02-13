@@ -3,7 +3,7 @@ import { getPosts } from "@/infra/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type Post = {
+export type Post = {
   id: number;
   title: string;
   content: string;
@@ -68,6 +68,12 @@ export default function Page() {
                     {post.username}
                   </div>
                 </div>
+                <button
+                  className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 dark:focus:ring-offset-gray-800 mb-12"
+                  onClick={() => router.push(`/posts/edit/${post.id}`)}
+                >
+                  編集
+                </button>
               </div>
             ))}
           </ul>

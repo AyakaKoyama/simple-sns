@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-
 RSpec.describe 'Posts', type: :request do
+
   let(:valid_params) do
     { post: { title: 'Title', content: 'Content', username: 'Username' } }
   end

@@ -25,7 +25,7 @@ const postSchema = yup.object().shape({
     }),
 });
 
-export default function Page() {
+export default function createPage() {
   const router = useRouter();
   const {
     register,
