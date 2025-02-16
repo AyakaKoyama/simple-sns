@@ -1,6 +1,7 @@
 "use client";
+import DeleteModal from "@/component/deleteModal";
 import { deletePost, getPosts } from "@/infra/api";
-import { on } from "events";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -15,7 +16,8 @@ export default function Page() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [postToDelete, setPostToDelete] = useState<number | null>(null);
   const fetchData = async () => {
     try {
       const response = await getPosts();
@@ -32,11 +34,21 @@ export default function Page() {
     fetchData();
   }, []);
 
+  const openDeleteModal = (id: number) => {
+    setPostToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setPostToDelete(null);
+  };
   const onDelete = async (id: number) => {
     try {
       const response = await deletePost(id);
       if (response) {
         fetchData();
+        setDeleteModalOpen(false);
       } else {
         throw new Error("削除に失敗しました");
       }
@@ -46,7 +58,7 @@ export default function Page() {
   };
 
   return (
-    <div>
+    <div id="root">
       <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
         投稿一覧
       </h2>
@@ -105,7 +117,7 @@ export default function Page() {
                 </button>
                 <button
                   className="text-slate-800 hover:text-blue-600 text-base bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-6 py-3 inline-flex space-x-1 items-center"
-                  onClick={() => onDelete(post.id)}
+                  onClick={() => openDeleteModal(post.id)}
                 >
                   <span>
                     <svg
@@ -124,6 +136,18 @@ export default function Page() {
                     </svg>
                   </span>
                 </button>
+                {isDeleteModalOpen && (
+                  <DeleteModal
+                    isOpen={isDeleteModalOpen}
+                    onRequestClose={closeDeleteModal}
+                    onDelete={() => {
+                      if (postToDelete !== null) {
+                        onDelete(postToDelete);
+                      }
+                    }}
+                    postTitle={post.title}
+                  />
+                )}
               </div>
             ))}
           </ul>
