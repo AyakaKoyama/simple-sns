@@ -10,16 +10,14 @@ interface IFormInput {
   title: string;
   content: string;
 }
-const postSchema = yup.object().shape({
+export const postSchema = yup.object().shape({
   title: yup.string().required(`タイトルは必須です`),
   content: yup.string().required(`内容は必須です`),
 });
 
 export default function editPage() {
   const router = useRouter();
-  const { id } = useParams(); // 修正
-
-  console.log(id);
+  const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,21 +71,31 @@ export default function editPage() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label className="block mb-2 text-indigo-500">タイトル</label>
+          <label
+            className="block text-sm font-medium text-gray-700"
+            htmlFor="タイトル"
+          >
+            タイトル
+          </label>
           <input
             type="text"
             {...register("title")}
-            className="w-full p-2 mb-2 text-gray-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
-          />
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          ></input>
           {errors.title && (
             <p className="text-red-500">{errors.title.message}</p>
           )}{" "}
         </div>
         <div>
-          <label className="block mb-2 text-indigo-500">内容</label>
+          <label
+            className="block text-sm font-medium text-gray-700"
+            htmlFor="内容"
+          >
+            内容
+          </label>
           <textarea
             {...register("content")}
-            className="w-full p-2 mb-2 text-gray-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           {errors.content && (
             <p className="text-red-500">{errors.content.message}</p>

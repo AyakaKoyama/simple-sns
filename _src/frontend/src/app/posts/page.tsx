@@ -97,6 +97,7 @@ export default function Page() {
                 <button
                   className="text-indigo-800 hover:text-blue-600 text-base bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-6 py-3 inline-flex space-x-1 items-center"
                   onClick={() => router.push(`/posts/edit/${post.id}`)}
+                  data-testid="edit-button"
                 >
                   <span>
                     <svg
@@ -118,6 +119,7 @@ export default function Page() {
                 <button
                   className="text-slate-800 hover:text-blue-600 text-base bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-6 py-3 inline-flex space-x-1 items-center"
                   onClick={() => openDeleteModal(post.id)}
+                  data-testid="delete-modal-button"
                 >
                   <span>
                     <svg
