@@ -18,7 +18,7 @@ jest.mock("@/component/deleteModal", () => ({
     <div>
       {isOpen && (
         <div id="delete-modal">
-          <h3>タイトル：{postTitle}を削除しますか？</h3>
+          <h3>削除しますか？</h3>
           <button onClick={onDelete}>削除</button>
           <button onClick={onRequestClose}>キャンセル</button>
         </div>
@@ -37,7 +37,6 @@ const renderDeleteModal = async () => {
         isOpen={true}
         onRequestClose={onRequestClose}
         onDelete={onDelete}
-        postTitle="テストタイトル"
       />
     );
   });
@@ -46,9 +45,7 @@ const renderDeleteModal = async () => {
 describe("DeleteModal", () => {
   it("削除モーダルが表示されること", async () => {
     await renderDeleteModal();
-    expect(
-      screen.getByText("タイトル：テストタイトルを削除しますか？")
-    ).toBeInTheDocument();
+    expect(screen.getByText("削除しますか？")).toBeInTheDocument();
   });
   it("削除モーダルのキャンセルボタンを押すと削除モーダルが閉じること", async () => {
     await renderDeleteModal();

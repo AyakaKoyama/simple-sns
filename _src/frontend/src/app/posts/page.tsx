@@ -58,7 +58,7 @@ export default function Page() {
   };
 
   return (
-    <div id="root">
+    <div>
       <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
         投稿一覧
       </h2>
@@ -138,21 +138,20 @@ export default function Page() {
                     </svg>
                   </span>
                 </button>
-                {isDeleteModalOpen && (
-                  <DeleteModal
-                    isOpen={isDeleteModalOpen}
-                    onRequestClose={closeDeleteModal}
-                    onDelete={() => {
-                      if (postToDelete !== null) {
-                        onDelete(postToDelete);
-                      }
-                    }}
-                    postTitle={post.title}
-                  />
-                )}
               </div>
             ))}
           </ul>
+          {isDeleteModalOpen && (
+            <DeleteModal
+              isOpen={isDeleteModalOpen}
+              onRequestClose={closeDeleteModal}
+              onDelete={() => {
+                if (postToDelete !== null) {
+                  onDelete(postToDelete);
+                }
+              }}
+            />
+          )}
         </>
       ) : (
         <p>投稿がありません</p>
