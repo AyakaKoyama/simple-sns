@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+    registrations: 'auth/registrations'
+  }
+
   namespace :api do
     namespace :v1 do
       # 基本的なメソッドを一括で表したい場合
@@ -12,4 +16,8 @@ Rails.application.routes.draw do
     # delete '/posts/:id', to: 'posts#destroy'
     end
   end
+    # ログインユーザー取得のルーティング
+    namespace :auth do
+      resources :sessions, only: %i[index]
+    end
 end

@@ -32,15 +32,19 @@ gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-
+# Devise
+gem 'devise'
+gem 'devise_token_auth'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
- gem "rack-cors"
+gem "rack-cors"
 
 group :development, :test do
   gem 'rspec-rails', '~> 7.0.0'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   # Factorybot追加
   gem 'factory_bot_rails'
+  # env ファイルを使用するためのgem
+  gem 'dotenv-rails'
 end
 
 group :development do
