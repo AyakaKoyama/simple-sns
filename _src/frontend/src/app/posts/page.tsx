@@ -1,7 +1,6 @@
 "use client";
 import DeleteModal from "@/component/deleteModal";
 import { deletePost, getPosts } from "@/infra/api";
-
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

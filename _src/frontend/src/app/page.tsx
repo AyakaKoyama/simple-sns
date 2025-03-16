@@ -6,11 +6,15 @@ import { createContext, useEffect, useState } from "react";
 type AuthContextType = {
   currentUser: any | null;
   setCurrentUser: (currentUser: any | null) => void;
+  isSignedIn: boolean;
+  setIsSignedIn: (isSignedIn: boolean) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
   currentUser: null,
   setCurrentUser: () => {},
+  isSignedIn: false,
+  setIsSignedIn: () => {},
 });
 
 export default function Home() {
@@ -45,14 +49,18 @@ export default function Home() {
       if (isSignedIn) {
         return children;
       } else {
+        useEffect(() => {
         router.push(`/signin`);
+      }, [loading, isSignedIn]);
       }
     } else {
       return <></>;
     }
   };
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+    <AuthContext.Provider
+      value={{ currentUser, setCurrentUser, isSignedIn, setIsSignedIn }}
+    >
       <Private>
         <p>Homeページです</p>
       </Private>
