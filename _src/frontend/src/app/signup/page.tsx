@@ -36,11 +36,16 @@ export default function Page() {
   };
   return (
     <>
-      <h1>サインアップページです</h1>
+      <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
+        サインアップ
+      </h2>
       <form>
         <div>
-          <label htmlFor="email">メールアドレス</label>
+          <label htmlFor="email" className="block mb-2 text-indigo-500">
+            メールアドレス
+          </label>
           <input
+            className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="email"
             id="email"
             name="email"
@@ -49,8 +54,11 @@ export default function Page() {
           />
         </div>
         <div>
-          <label htmlFor="password">パスワード</label>
+          <label htmlFor="password" className="block mb-2 text-indigo-500">
+            パスワード
+          </label>
           <input
+            className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="password"
             id="password"
             name="password"
@@ -59,8 +67,14 @@ export default function Page() {
           />
         </div>
         <div>
-          <label htmlFor="password_confirmation">パスワード確認</label>
+          <label
+            htmlFor="password_confirmation"
+            className="block mb-2 text-indigo-500"
+          >
+            パスワード確認
+          </label>
           <input
+            className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="password"
             id="password_confirmation"
             name="password_confirmation"
@@ -70,13 +84,18 @@ export default function Page() {
         </div>
         <div>
           <input
+            className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="hidden"
             id="confirm_success_url"
             name="confirm_success_url"
             value={confirmSuccessUrl}
           />
         </div>
-        <button type="submit" onClick={(e) => handleSignUpSubmit(e)}>
+        <button
+          type="submit"
+          onClick={(e) => handleSignUpSubmit(e)}
+          className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 dark:focus:ring-offset-gray-800 mb-4"
+        >
           Submit
         </button>
       </form>

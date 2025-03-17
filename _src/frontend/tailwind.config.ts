@@ -13,9 +13,6 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      // zIndex: {
-      //   "1000": "1000", // react-modal のスタイルと一致させる
-      // },
     },
   },
   plugins: [],

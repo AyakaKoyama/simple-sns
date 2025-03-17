@@ -41,11 +41,16 @@ export default function Page() {
   };
   return (
     <>
-      <p>サインインページです</p>
+      <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
+        サインイン
+      </h2>
       <form onSubmit={handleSignInSubmit}>
         <div>
-          <label htmlFor="email">メールアドレス</label>
+          <label htmlFor="email" className="block mb-2 text-indigo-500">
+            メールアドレス
+          </label>
           <input
+            className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="email"
             id="email"
             name="email"
@@ -54,8 +59,11 @@ export default function Page() {
           />
         </div>
         <div>
-          <label htmlFor="password">パスワード</label>
+          <label htmlFor="password" className="block mb-2 text-indigo-500">
+            パスワード
+          </label>
           <input
+            className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="password"
             id="password"
             name="password"

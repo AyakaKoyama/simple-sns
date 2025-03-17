@@ -45,24 +45,36 @@ export default function Home() {
   }, [setCurrentUser]);
 
   const Private = ({ children }: { children: React.ReactNode }) => {
-    if (!loading) {
-      if (isSignedIn) {
-        return children;
-      } else {
-        useEffect(() => {
-        router.push(`/signin`);
-      }, [loading, isSignedIn]);
+    useEffect(() => {
+      if (!loading && !isSignedIn) {
+        router.push("/signin");
       }
-    } else {
-      return <></>;
+    }, [loading, isSignedIn, router]); // 依存配列を明確にする
+
+    if (loading) {
+      return <></>; // ローディング中は何も表示しない
     }
+
+    if (!isSignedIn) {
+      return null; // リダイレクト中はコンテンツをレンダリングしない
+    }
+
+    return <>{children}</>;
   };
   return (
     <AuthContext.Provider
       value={{ currentUser, setCurrentUser, isSignedIn, setIsSignedIn }}
     >
       <Private>
-        <p>Homeページです</p>
+        <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
+          ログイン済みです
+        </h2>
+        <button
+          className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 dark:focus:ring-offset-gray-800 mb-4"
+          onClick={() => router.push("/posts")}
+        >
+          投稿一覧へ
+        </button>
       </Private>
     </AuthContext.Provider>
   );
