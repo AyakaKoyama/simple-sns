@@ -66,15 +66,31 @@ export default function Home() {
       value={{ currentUser, setCurrentUser, isSignedIn, setIsSignedIn }}
     >
       <Private>
-        <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
-          ログイン済みです
-        </h2>
-        <button
-          className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 dark:focus:ring-offset-gray-800 mb-4"
-          onClick={() => router.push("/posts")}
-        >
-          投稿一覧へ
-        </button>
+        <div className="flex items-center justify-center h-screen bg-gray-200">
+          <div className="container">
+            <div className="bg-white rounded-lg shadow-lg p-5 md:p-20 mx-2">
+              <div className="text-center">
+                <h2 className="text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none md:text-6xl">
+                  ログイン<span className="text-indigo-600">成功</span>
+                </h2>
+                <h3 className="text-xl md:text-3xl mt-10">ようこそ！</h3>
+                <p className="text-md md:text-xl mt-10">
+                  シンプルなSNSで、気軽に投稿してみましょう。
+                </p>
+              </div>
+              <div className="flex flex-wrap mt-10 justify-center">
+                <div className="m-3">
+                  <button
+                    className="md:w-35 bg-white tracking-wide text-gray-800 font-bold rounded border-2 border-blue-600 hover:border-blue-600 hover:bg-blue-600 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+                    onClick={() => router.push("/posts")}
+                  >
+                    投稿一覧へ
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </Private>
     </AuthContext.Provider>
   );

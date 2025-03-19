@@ -4,7 +4,15 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../page";
 import { signUp } from "@/infra/auth";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { authSchema } from "@/component/authValidation";
 
+interface IFormInput {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 export default function Page() {
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -12,6 +20,14 @@ export default function Page() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
   const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IFormInput>({
+    resolver: yupResolver(authSchema),
+  });
 
   const generateParams = () => {
     const signUpParams = {
@@ -23,8 +39,7 @@ export default function Page() {
     return signUpParams;
   };
 
-  const handleSignUpSubmit = async (e: any) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<IFormInput> = async () => {
     const params = generateParams();
     try {
       const res = await signUp(params);
@@ -39,7 +54,7 @@ export default function Page() {
       <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
         サインアップ
       </h2>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email" className="block mb-2 text-indigo-500">
             メールアドレス
@@ -48,10 +63,11 @@ export default function Page() {
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="email"
             id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
           />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}{" "}
         </div>
         <div>
           <label htmlFor="password" className="block mb-2 text-indigo-500">
@@ -61,10 +77,11 @@ export default function Page() {
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="password"
             id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
           />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}{" "}
         </div>
         <div>
           <label
@@ -75,12 +92,13 @@ export default function Page() {
           </label>
           <input
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
-            type="password"
-            id="password_confirmation"
-            name="password_confirmation"
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            type="confirmPassword"
+            id="confirmPassword"
+            {...register("confirmPassword")}
           />
+          {errors.confirmPassword && (
+            <p className="text-red-500">{errors.confirmPassword.message}</p>
+          )}{" "}
         </div>
         <div>
           <input
@@ -93,10 +111,9 @@ export default function Page() {
         </div>
         <button
           type="submit"
-          onClick={(e) => handleSignUpSubmit(e)}
           className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 dark:focus:ring-offset-gray-800 mb-4"
         >
-          Submit
+          登録
         </button>
       </form>
       <button

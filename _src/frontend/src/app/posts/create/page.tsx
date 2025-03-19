@@ -5,25 +5,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import { postSchema } from "@/component/postValidation";
 
 interface IFormInput {
   title: string;
   content: string;
   username: string;
 }
-
-// バリデーションスキーマを定義
-const postSchema = yup.object().shape({
-  title: yup.string().required(`タイトルは必須です`),
-  content: yup.string().required(`内容は必須です`),
-  username: yup
-    .string()
-    .required(`ユーザー名は必須です`)
-    .test("sameusername", "ユーザー名が重複しています", async (input) => {
-      const response = await getPosts();
-      return !response.some((post: any) => post.username === input);
-    }),
-});
 
 export default function createPage() {
   const router = useRouter();
@@ -33,7 +21,7 @@ export default function createPage() {
     reset,
     formState: { errors },
   } = useForm<IFormInput>({
-    resolver: yupResolver(postSchema), // yupを使ったバリデーションを設定
+    resolver: yupResolver(postSchema),
   });
 
   const postPostFunc = async (post: IFormInput) => {

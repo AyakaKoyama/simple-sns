@@ -4,12 +4,29 @@ import { signIn } from "@/infra/auth";
 import { useContext, useState } from "react";
 import { AuthContext } from "../page";
 import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { authSchema } from "@/component/authValidation";
 
+interface IFormInput {
+  email: string;
+  password: string;
+  //validationとの互換
+  confirmPassword: string;
+}
 export default function Page() {
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IFormInput>({
+    resolver: yupResolver(authSchema),
+  });
 
   const generateParams = () => {
     const signInParams = {
@@ -19,8 +36,7 @@ export default function Page() {
     return signInParams;
   };
 
-  const handleSignInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<IFormInput> = async () => {
     const params = generateParams();
 
     try {
@@ -38,13 +54,14 @@ export default function Page() {
     } catch (e) {
       console.log(e);
     }
+    reset();
   };
   return (
     <>
       <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
         サインイン
       </h2>
-      <form onSubmit={handleSignInSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email" className="block mb-2 text-indigo-500">
             メールアドレス
@@ -53,10 +70,11 @@ export default function Page() {
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="email"
             id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
           />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}{" "}
         </div>
         <div>
           <label htmlFor="password" className="block mb-2 text-indigo-500">
@@ -66,16 +84,18 @@ export default function Page() {
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
             type="password"
             id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
           />
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}{" "}
         </div>
         <button
           type="submit"
           className="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 dark:focus:ring-offset-gray-800 mb-4"
+          disabled={Object.keys(errors).length > 0}
         >
-          Submit
+          登録
         </button>
       </form>
       <button
