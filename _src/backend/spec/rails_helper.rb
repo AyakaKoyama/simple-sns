@@ -35,4 +35,14 @@ RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.syntax = :expect
   end
+
+  # Devise Token Auth のテスト用設定を追加
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  # config.include DeviseTokenAuth::Test::ControllerHelpers, type: :request
+ 
+
+  # 認証ヘッダーを生成するヘルパーメソッド
+  def auth_tokens_for_user(user)
+    user.create_new_auth_token
+  end
 end
