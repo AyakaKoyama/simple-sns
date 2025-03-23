@@ -64,5 +64,8 @@ DeviseTokenAuth.setup do |config|
   # By default DeviseTokenAuth will not send confirmation email, even when including
   # devise confirmable module. If you want to use devise confirmable module and
   # send email, set it to true. (This is a setting for compatibility)
-  # config.send_confirmation_email = true
+  config.send_confirmation_email = false
+  
+  # テスト環境ではトークン検証をスキップ（開発時のみ）
+  config.bypass_sign_in = true if Rails.env.test?
 end

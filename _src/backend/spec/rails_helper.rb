@@ -39,10 +39,22 @@ RSpec.configure do |config|
   # Devise Token Auth のテスト用設定を追加
   config.include Devise::Test::IntegrationHelpers, type: :request
   # config.include DeviseTokenAuth::Test::ControllerHelpers, type: :request
- 
 
   # 認証ヘッダーを生成するヘルパーメソッド
   def auth_tokens_for_user(user)
     user.create_new_auth_token
+  end
+
+  # テスト環境のホスト設定を追加
+  config.before(:each) do
+    Rails.application.routes.default_url_options[:host] = 'localhost:3001'
+  end
+
+  # devise_token_authのメール送信をスキップ
+  config.before(:each) do
+    # スキップするのはUserモデル自体のコールバックメソッド
+    allow_any_instance_of(User)
+    .to receive(:send_on_create_confirmation_instructions)
+    .and_return(true)
   end
 end
