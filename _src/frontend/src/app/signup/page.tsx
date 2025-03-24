@@ -64,6 +64,7 @@ export default function Page() {
             type="email"
             id="email"
             {...register("email")}
+            onChange={(e) => setEmail(e.target.value)}
           />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
@@ -78,6 +79,7 @@ export default function Page() {
             type="password"
             id="password"
             {...register("password")}
+            onChange={(e) => setPassword(e.target.value)}
           />
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
@@ -85,16 +87,17 @@ export default function Page() {
         </div>
         <div>
           <label
-            htmlFor="password_confirmation"
+            htmlFor="confirmPassword"
             className="block mb-2 text-indigo-500"
           >
             パスワード確認
           </label>
           <input
             className="w-full p-2 mb-2 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
-            type="confirmPassword"
+            type="password"
             id="confirmPassword"
             {...register("confirmPassword")}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
           />
           {errors.confirmPassword && (
             <p className="text-red-500">{errors.confirmPassword.message}</p>
