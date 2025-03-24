@@ -61,7 +61,7 @@ export default function Page() {
       <h2 className="text-2xl font-bold text-indigo-800 dark:text-white mb-4">
         サインイン
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} aria-label="signin-form">
         <div>
           <label htmlFor="email" className="block mb-2 text-indigo-500">
             メールアドレス
@@ -71,6 +71,7 @@ export default function Page() {
             type="email"
             id="email"
             {...register("email")}
+            onChange={(e) => setEmail(e.target.value)}
           />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
@@ -85,6 +86,7 @@ export default function Page() {
             type="password"
             id="password"
             {...register("password")}
+            onChange={(e) => setPassword(e.target.value)}
           />
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>
