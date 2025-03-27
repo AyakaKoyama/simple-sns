@@ -1,0 +1,14 @@
+<% if post.image.attached? %>
+  <div><%= image_tag(post.image) %></div>
+<% end %>
+
+# 複数のイメージを持たせる
+<% if post.images.attached? %>
+  <% post.images.each do |image| %>
+     <div><%= image_tag(image) %></div>
+  <% end %>
+<% end %>
+
+<% if post.image.attached? && post.image.content_type.in?(%w[image/jpeg image/png]) %>
+  <div><%= image_tag(post.image_as_thumbnail) %></div>
+<% end %>

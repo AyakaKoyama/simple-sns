@@ -1,0 +1,10 @@
+<div class="my-3">
+    <%= form.label :image%><br>
+    <%= form.file_field :image%>
+</div>
+
+# 複数のイメージを持たせる
+<div class="my-3">
+    <%= form.label :images%><br>
+    <%= form.file_field :images, multiple: true %>
+</div>
