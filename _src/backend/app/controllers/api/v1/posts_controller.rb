@@ -36,6 +36,14 @@ module Api
         render json: {}, status: :no_content
       end
 
+      def delete_image
+        @blog = Blog.find(params[:id])
+        @blog.image.purge
+        respond_to do |format|
+            render turbo_stream: turbo_stream.remove(@blog.image)
+        end
+      end
+
       private
 
       def post_params

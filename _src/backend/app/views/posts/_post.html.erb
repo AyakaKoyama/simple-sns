@@ -12,3 +12,12 @@
 <% if post.image.attached? && post.image.content_type.in?(%w[image/jpeg image/png]) %>
   <div><%= image_tag(post.image_as_thumbnail) %></div>
 <% end %>
+
+<% if post.image.attached? %>
+        <%= link_to '画像を削除する', delete_image_post_path(post),
+        data: { turbo_method: :delete },
+        class: 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow' %>
+        <%= turbo_frame_tag dom_id(post.image) do %>
+          <%= image_tag post.image, data: { previews_target: "preview" } %>
+        <% end %>
+<% end %>
