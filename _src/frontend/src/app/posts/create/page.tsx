@@ -6,6 +6,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { postSchema } from "@/component/postValidation";
+import { useState } from "react";
+import ImagePreview from "@/component/ImagePreview";
 
 interface IFormInput {
   title: string;
@@ -23,6 +25,7 @@ export default function createPage() {
   } = useForm<IFormInput>({
     resolver: yupResolver(postSchema),
   });
+  const [image, setImage] = useState<File | null>(null);
 
   const postPostFunc = async (post: IFormInput) => {
     await postPost(post);
@@ -83,6 +86,7 @@ export default function createPage() {
           {errors.username && (
             <p className="text-red-500">{errors.username.message}</p>
           )}{" "}
+          <ImagePreview onImageSelect={setImage} />
         </div>
 
         <button
