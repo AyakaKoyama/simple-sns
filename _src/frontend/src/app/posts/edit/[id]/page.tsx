@@ -5,10 +5,12 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter, useParams } from "next/navigation"; // 修正
 import { useState, useEffect, useCallback } from "react";
+import ImagePreview from "@/component/ImagePreview";
 
 interface IFormInput {
   title: string;
   content: string;
+  image?: File;
 }
 export const postSchema = yup.object().shape({
   title: yup.string().required(`タイトルは必須です`),
@@ -18,9 +20,11 @@ export const postSchema = yup.object().shape({
 export default function editPage() {
   const router = useRouter();
   const { id } = useParams();
+  const [image, setImage] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -47,6 +51,7 @@ export default function editPage() {
       console.log(response);
       setValue("title", response.title);
       setValue("content", response.content);
+      setValue("image", response.image);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -100,6 +105,9 @@ export default function editPage() {
           {errors.content && (
             <p className="text-red-500">{errors.content.message}</p>
           )}{" "}
+        </div>
+        <div className="mb-4">
+          <ImagePreview onImageSelect={setImage} />
         </div>
         <button
           type="submit"

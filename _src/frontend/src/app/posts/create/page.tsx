@@ -13,6 +13,7 @@ interface IFormInput {
   title: string;
   content: string;
   username: string;
+  image?: File | null;
 }
 
 export default function createPage() {
@@ -28,14 +29,27 @@ export default function createPage() {
   const [image, setImage] = useState<File | null>(null);
 
   const postPostFunc = async (post: IFormInput) => {
-    await postPost(post);
+    //画像ファイルを送信するには multipart/form-data 形式にする必要がある
+    const formData = new FormData();
+    formData.append("post[title]", post.title);
+    formData.append("post[content]", post.content);
+    formData.append("post[username]", post.username);
+    if (image) {
+      formData.append("post[image]", image);
+    }
+
+    console.log(post.image);
+    console.log(typeof post.image);
+
+    await postPost(formData);
     if (router) {
       router.push("/posts");
     }
   };
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    postPostFunc(data);
+    const postData: IFormInput = { ...data, image };
+    postPostFunc(postData);
     reset();
   };
 
@@ -86,9 +100,10 @@ export default function createPage() {
           {errors.username && (
             <p className="text-red-500">{errors.username.message}</p>
           )}{" "}
+        </div>
+        <div className="mb-4">
           <ImagePreview onImageSelect={setImage} />
         </div>
-
         <button
           className="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
           type="submit"

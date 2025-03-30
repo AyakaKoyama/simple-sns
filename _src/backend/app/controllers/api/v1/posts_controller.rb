@@ -13,7 +13,14 @@ module Api
 
       def create
         post = Post.new(post_params)
-
+      
+        if params[:image]
+          Rails.logger.debug "Image received: #{params[:image].inspect}" # 画像が渡っているか確認
+          post.image.attach(params[:image])
+        else
+          Rails.logger.debug "No image received"
+        end
+      
         if post.save
           render json: post, status: :created
         else
@@ -40,14 +47,14 @@ module Api
         @blog = Blog.find(params[:id])
         @blog.image.purge
         respond_to do |format|
-            render turbo_stream: turbo_stream.remove(@blog.image)
+        render turbo_stream: turbo_stream.remove(@blog.image)
         end
       end
 
       private
 
       def post_params
-        params.require(:post).permit(:title, :content, :username, :image, images: [])
+        params.require(:post).permit(:title, :content, :username, :image)
       end
     end
   end

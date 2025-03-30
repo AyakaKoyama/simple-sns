@@ -7,58 +7,33 @@ axios.defaults.headers.common["Content-Type"] = "application/json";
 
 export const postPost = async (params: any) =>
   axios
-    .post("/posts", snakecaseKeys(params), {
+    .post("/posts", params, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     })
     .then((response) => {
       console.log(response.data);
-      return camelcaseKeys(response.data, { deep: true });
+      return response.data;
     })
-    .catch(function (error) {
-      if (error.response) {
-        // リクエストが行われ、サーバーは 2xx の範囲から外れるステータスコードで応答しました
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // リクエストは行われましたが、応答がありませんでした
-        // `error.request` は、ブラウザでは XMLHttpRequest のインスタンスになり、
-        // Node.js では http.ClientRequest のインスタンスになります。
-        console.log(error.request);
-      } else {
-        // エラーをトリガーしたリクエストの設定中に何かが発生しました
-        console.log("Error", error.message);
-      }
-      console.log(error.config);
-      throw error; // エラーを再スロー
+    .catch((error) => {
+      console.error(error);
+      throw error;
     });
 
 export const getPost = async (params: any) =>
   axios({
     method: "get",
     url: `/posts/${params}`,
+    responseType: "blob", // ← 追加：画像を Blob で取得
   })
-    .then((response) => camelcaseKeys(response.data, { deep: true }))
+    .then((response) => {
+      return URL.createObjectURL(response.data); // Blob を URL に変換
+    })
 
-    .catch(function (error) {
-      if (error.response) {
-        // リクエストが行われ、サーバーは 2xx の範囲から外れるステータスコードで応答しました
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // リクエストは行われましたが、応答がありませんでした
-        // `error.request` は、ブラウザでは XMLHttpRequest のインスタンスになり、
-        // Node.js では http.ClientRequest のインスタンスになります。
-        console.log(error.request);
-      } else {
-        // エラーをトリガーしたリクエストの設定中に何かが発生しました
-        console.log("Error", error.message);
-      }
-      console.log(error.config);
-      throw error; // エラーを再スロー
+    .catch((error) => {
+      console.error(error);
+      throw error;
     });
 
 export const updatePost = async (params: any, data: any) =>
@@ -83,21 +58,7 @@ export const getPosts = async () =>
       console.log(response);
       return camelcaseKeys(response.data, { deep: true });
     })
-    .catch(function (error) {
-      if (error.response) {
-        // リクエストが行われ、サーバーは 2xx の範囲から外れるステータスコードで応答しました
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // リクエストは行われましたが、応答がありませんでした
-        // `error.request` は、ブラウザでは XMLHttpRequest のインスタンスになり、
-        // Node.js では http.ClientRequest のインスタンスになります。
-        console.log(error.request);
-      } else {
-        // エラーをトリガーしたリクエストの設定中に何かが発生しました
-        console.log("Error", error.message);
-      }
-      console.log(error.config);
-      throw error; // エラーを再スロー
+    .catch((error) => {
+      console.error(error);
+      throw error;
     });

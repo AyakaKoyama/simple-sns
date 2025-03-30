@@ -9,6 +9,7 @@ export type Post = {
   title: string;
   content: string;
   username: string;
+  image?: File | string;
 };
 export default function Page() {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function Page() {
   useEffect(() => {
     fetchData();
   }, []);
+  //console.log(posts[0].image);
 
   const openDeleteModal = (id: number) => {
     setPostToDelete(id);
@@ -77,7 +79,7 @@ export default function Page() {
             {posts.map((post: any) => (
               <div
                 key={post.id}
-                className="rounded-xl overflow-hidden flex shadow hover:shadow-md max-w-sm bg-white cursor-pointer h-28 mb-4"
+                className="rounded-xl overflow-hidden flex shadow hover:shadow-md max-w-md bg-white cursor-pointer h-35 mb-4"
               >
                 <div className="w-7/12 pl-3 p-3 text-text1 flex flex-col justify-center">
                   <p
@@ -92,6 +94,21 @@ export default function Page() {
                   <div className="text-sm text-text2 tracking-wider">
                     {post.username}
                   </div>
+                </div>
+                <div className="text-sm text-text2 tracking-wider">
+                  {post.image && (
+                    <img
+                      src={
+                        typeof post.image === "string"
+                          ? post.image
+                          : post.image instanceof File
+                          ? URL.createObjectURL(post.image)
+                          : ""
+                      }
+                      alt="プレビュー"
+                      className="mt-2 max-w-xs rounded"
+                    />
+                  )}
                 </div>
                 <button
                   className="text-indigo-800 hover:text-blue-600 text-base bg-white hover:bg-slate-100 border border-slate-200 rounded-l-lg font-medium px-6 py-3 inline-flex space-x-1 items-center"

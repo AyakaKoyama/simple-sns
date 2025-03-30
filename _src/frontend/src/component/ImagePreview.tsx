@@ -22,6 +22,7 @@ export default function ImagePreview({ onImageSelect }: ImagePreviewProps) {
     } else {
       setPreview(null);
     }
+    console.log(file);
   };
 
   return (
