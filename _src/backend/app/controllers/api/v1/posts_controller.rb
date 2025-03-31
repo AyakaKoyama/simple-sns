@@ -1,14 +1,17 @@
 module Api
   module V1
     class PostsController < ApiController
+
       def index
-        posts = Post.all
+        posts = Post.all.map do |post|
+          post.as_json.merge(image_url: post.image.attached? ? url_for(post.image) : nil)
+        end
         render json: posts
       end
 
       def show
         post = Post.find(params[:id])
-        render json: post
+        render json: post.as_json.merge(image_url: post.image.attached? ? url_for(post.image) : nil)
       end
 
       def create
@@ -22,7 +25,7 @@ module Api
         end
       
         if post.save
-          render json: post, status: :created
+          render json: post.as_json.merge(image_url: post.image.attached? ? url_for(post.image) : nil), status: :created
         else
           render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
         end
@@ -31,7 +34,7 @@ module Api
       def update
         post = Post.find(params[:id])
         if post.update(post_params)
-          render json: post
+          render json: post.as_json.merge(image_url: post.image.attached? ? url_for(post.image) : nil)
         else
           render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
         end

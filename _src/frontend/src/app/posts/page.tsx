@@ -10,6 +10,7 @@ export type Post = {
   content: string;
   username: string;
   image?: File | string;
+  imageUrl?: string; // この行を追加
 };
 export default function Page() {
   const router = useRouter();
@@ -96,15 +97,9 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="text-sm text-text2 tracking-wider">
-                  {post.image && (
+                  {post.imageUrl && (
                     <img
-                      src={
-                        typeof post.image === "string"
-                          ? post.image
-                          : post.image instanceof File
-                          ? URL.createObjectURL(post.image)
-                          : ""
-                      }
+                      src={post.imageUrl}
                       alt="プレビュー"
                       className="mt-2 max-w-xs rounded"
                     />

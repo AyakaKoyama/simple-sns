@@ -41,9 +41,14 @@ export default function createPage() {
     console.log(post.image);
     console.log(typeof post.image);
 
-    await postPost(formData);
-    if (router) {
-      router.push("/posts");
+    try {
+      await postPost(formData);
+      if (router) {
+        router.push("/posts");
+        setImage(null); // imageステートをクリア
+      }
+    } catch (error) {
+      console.error("Error posting data:", error);
     }
   };
 
