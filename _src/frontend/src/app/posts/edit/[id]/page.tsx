@@ -6,11 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter, useParams } from "next/navigation"; // 修正
 import { useState, useEffect, useCallback } from "react";
 import ImagePreview from "@/component/ImagePreview";
+import { Post } from "@/types/post";
 
 interface IFormInput {
   title: string;
   content: string;
-  image?: File;
+  image?: File | null;
 }
 export const postSchema = yup.object().shape({
   title: yup.string().required(`タイトルは必須です`),
@@ -21,7 +22,6 @@ export default function editPage() {
   const router = useRouter();
   const { id } = useParams();
   const [image, setImage] = useState<File | null>(null);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,11 +47,11 @@ export default function editPage() {
 
   const fetchPost = async (postId: string) => {
     try {
-      const response = await getPost(postId);
+      const response: Post = await getPost(postId);
       console.log(response);
       setValue("title", response.title);
       setValue("content", response.content);
-      setValue("image", response.image);
+      setValue("image", response.imageUrl);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -61,7 +61,13 @@ export default function editPage() {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      await updatePost(id, data);
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("content", data.content);
+      if (data.image) {
+        formData.append("image", data.image);
+      }
+      await updatePost(id, formData);
       router.push(`/posts`);
     } catch (error: any) {
       setError(error.message);

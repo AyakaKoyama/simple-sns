@@ -1,3 +1,4 @@
+import { Post } from "@/types/post";
 import axios from "axios";
 import camelcaseKeys from "camelcase-keys";
 import snakecaseKeys from "snakecase-keys";
@@ -21,20 +22,15 @@ export const postPost = async (params: any) =>
       throw error;
     });
 
-export const getPost = async (params: any) =>
-  axios({
-    method: "get",
-    url: `/posts/${params}`,
-    responseType: "blob", // ← 追加：画像を Blob で取得
-  })
-    .then((response) => {
-      return URL.createObjectURL(response.data); // Blob を URL に変換
-    })
-
-    .catch((error) => {
-      console.error(error);
-      throw error;
-    });
+export const getPost = async (id: string): Promise<Post> => {
+  try {
+    const response = await axios.get(`/posts/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export const updatePost = async (params: any, data: any) =>
   axios({

@@ -1,17 +1,10 @@
 "use client";
 import DeleteModal from "@/component/deleteModal";
 import { deletePost, getPosts } from "@/infra/api";
+import { Post } from "@/types/post";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type Post = {
-  id: number;
-  title: string;
-  content: string;
-  username: string;
-  image?: File | string;
-  imageUrl?: string; // この行を追加
-};
 export default function Page() {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
