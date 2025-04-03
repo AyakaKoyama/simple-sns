@@ -22,6 +22,7 @@ export default function editPage() {
   const router = useRouter();
   const { id } = useParams();
   const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,14 +52,14 @@ export default function editPage() {
       console.log(response);
       setValue("title", response.title);
       setValue("content", response.content);
-      setValue("image", response.imageUrl);
+      setImageUrl(response.imageUrl || null);
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-
+  console.log(imageUrl);
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       const formData = new FormData();
@@ -113,7 +114,18 @@ export default function editPage() {
           )}{" "}
         </div>
         <div className="mb-4">
-          <ImagePreview onImageSelect={setImage} />
+          <ImagePreview onImageSelect={setImage} imageUrl={imageUrl} />
+        </div>
+        <div className="w-1/4 p-3 flex items-start">
+          {imageUrl && (
+            <div className="w-16 h-16 rounded-full overflow-hidden">
+              <img
+                src={imageUrl}
+                alt={`投稿画像: ${imageUrl}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
         </div>
         <button
           type="submit"

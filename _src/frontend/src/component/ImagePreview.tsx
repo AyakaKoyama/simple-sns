@@ -1,28 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface ImagePreviewProps {
   onImageSelect: (file: File | null) => void;
+  imageUrl?: string | null;
 }
 
-export default function ImagePreview({ onImageSelect }: ImagePreviewProps) {
+export const ImagePreview: React.FC<ImagePreviewProps> = ({
+  onImageSelect,
+  imageUrl,
+}) => {
   const [preview, setPreview] = useState<string | null>(null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    onImageSelect(file);
-
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
+      onImageSelect(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     } else {
+      onImageSelect(null);
       setPreview(null);
     }
-    console.log(file);
   };
 
   return (
@@ -30,8 +33,17 @@ export default function ImagePreview({ onImageSelect }: ImagePreviewProps) {
       <label className="block mb-2 text-indigo-500">画像アップロード</label>
       <input type="file" accept="image/*" onChange={handleImageChange} />
       {preview && (
-        <img src={preview} alt="プレビュー" className="mt-2 max-w-xs rounded" />
+        <div className="mt-2">
+          <img src={preview} alt="プレビュー" className="max-w-xs rounded" />
+        </div>
+      )}
+      {imageUrl && !preview && (
+        <div className="mt-2">
+          <img src={imageUrl} alt="既存の画像" className="max-w-xs rounded" />
+        </div>
       )}
     </div>
   );
-}
+};
+
+export default ImagePreview;
