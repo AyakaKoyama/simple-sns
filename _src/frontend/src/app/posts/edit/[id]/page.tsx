@@ -12,6 +12,7 @@ interface IFormInput {
   title: string;
   content: string;
   image?: File | null;
+  imageUrl?: string;
 }
 export const postSchema = yup.object().shape({
   title: yup.string().required(`タイトルは必須です`),
@@ -20,7 +21,7 @@ export const postSchema = yup.object().shape({
 
 export default function editPage() {
   const router = useRouter();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,8 +39,8 @@ export default function editPage() {
   useEffect(() => {
     if (id) {
       // idが配列の場合は最初の要素を、文字列の場合はそのまま使用
-      const postId = Array.isArray(id) ? id[0] : id;
-      fetchPost(postId);
+      //const postId = Array.isArray(id) ? id[0] : id;
+      fetchPost(id);
     } else {
       console.log("id is empty");
       setLoading(false);
@@ -50,23 +51,25 @@ export default function editPage() {
     try {
       const response: Post = await getPost(postId);
       console.log(response);
+
       setValue("title", response.title);
       setValue("content", response.content);
       setImageUrl(response.imageUrl || null);
       setLoading(false);
+      console.log(response.imageUrl);
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
     }
   };
-  console.log(imageUrl);
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("content", data.content);
-      if (data.image) {
-        formData.append("image", data.image);
+      if (image) {
+        formData.append("image", image);
       }
       await updatePost(id, formData);
       router.push(`/posts`);

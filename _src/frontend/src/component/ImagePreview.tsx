@@ -12,6 +12,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   imageUrl,
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
+  console.log(imageUrl);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -28,6 +29,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
     }
   };
 
+  //
   return (
     <div>
       <label className="block mb-2 text-indigo-500">画像アップロード</label>

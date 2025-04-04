@@ -25,19 +25,29 @@ export const postPost = async (params: any) =>
 export const getPost = async (id: string): Promise<Post> => {
   try {
     const response = await axios.get(`/posts/${id}`);
-    return response.data;
+    return camelcaseKeys(response.data, { deep: true });
   } catch (error: any) {
     console.error(error);
     throw error;
   }
 };
 
-export const updatePost = async (params: any, data: any) =>
-  axios({
-    method: "put",
-    url: `/posts/${params}`,
-    data: snakecaseKeys(data),
-  }).then((response) => camelcaseKeys(response.data, { deep: true }));
+export const updatePost = async (id: string, data: FormData) => {
+  try {
+    const response = await axios({
+      method: "put",
+      url: `/posts/${id}`,
+      data: data,
+      headers: {
+        "Content-Type": "multipart/form-data", // Set the correct content type
+      },
+    });
+    return camelcaseKeys(response.data, { deep: true });
+  } catch (error: any) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export const deletePost = async (params: any) =>
   axios({
